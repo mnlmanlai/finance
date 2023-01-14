@@ -25,20 +25,23 @@ var uiController = (function(){
 
 //Sanhvvtei ajillah controller 
 var financeController = (function(){
+    // private data
     var Income = function (id, description, value){
         this.id = id;
         this.description = description;
         this.value = value;
-      };
-      
-      var Expense = function(id, description, value){
+    };
+
+    // private data  
+    var Expense = function(id, description, value){
         this.id = id;
         this.description = description;
         this.value = value;
-      };
-      
-      var data = {
-        allItems : {
+    };
+    
+    // private data
+    var data = {
+        items : {
             inc: [],
             exp: []
         },
@@ -47,7 +50,32 @@ var financeController = (function(){
             inc: 0,
             exp: 0
         }
-      }
+    }
+
+    return{
+        addItem: function(type, desc, val){
+            
+            var item, id;
+
+            if (data.items[type].length === 0) id = 1;
+            else {
+                id = data.items[type][data.items[type].length - 1].id + 1;
+             }
+            if(type === 'inc'){
+                item = new Income(id, desc, val);
+            }else{
+                // type === exp
+                item = new Expense(id, desc, val);
+            }
+            data.items[type].push(item);
+        },
+
+        seedata : function(){
+            return data; 
+        }
+    }
+
+    
      
 })();
 
@@ -56,9 +84,10 @@ var appController = (function(uiController, financeController ){
 
     var ctrlAddItem = function(){
      //1.oruulah ogogldiig delgetsees old awna.
-    console.log(uiController.getInput());
-
+    var input = uiController.getInput();
+    
     //2. Olj awsan ogogdlvvdee sanhvvgiin controller damjuulj tend hadgalna
+    financeController.addItem(input.type, input.description, input.value);
     //3. Olj awsna ogogdlvvdee web deeree tohiroh hesgvvddeer gargana.
     //4. toswiig tootsoolno
     //5. Etssiin vldegdel, tootsoog delgetsend gargana.
